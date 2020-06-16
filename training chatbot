@@ -1,32 +1,36 @@
 
-from chatterbot import ChatBot
+import speech_recognition as sr
+import wikipedia
+r = sr.Recognizer()
 
-import yaml
-from chatterbot.trainers import ChatterBotCorpusTrainer
-import yaml
-dataset = yaml.load('datasets_110245_263384_ai')
+#global variables
+model_name = "rj"
+start_statement = "hello rj rishabh"
 
-bot = ChatBot(
-    "Chat Bot",
-    storage_adapter="chatterbot.storage.SQLStorageAdapter",
-    database="botData.sqlite3")
-
-trainer = ChatterBotCorpusTrainer(bot)
-
-trainer.train(dataset)
-
-
-
-while True:
-
-        message = input('You:')
-
-        if message.strip() == 'Bye':
-            print('ChatBwhat ot: Bye')
-            break
+def audio_rec():
+    with sr.Microphone() as source:
+    # read the audio data from the default microphone
+        audio_data = r.record(source, duration=5)
+        audio = r.record(source)
+        print("Recognizing...")
+    # convert speech to text
+        text = r.recognize_google(audio_data, language = 'en-IN')
+        print(text)
+        if text.split(' ', 1)[0].lower() == model_name:
+            if text.split(' ')[1].lower() == "vicky":
+                text1 = wikipedia.summary(text.split()[1:])
+                print(' '.join(text1))                                      #speak
         else:
-            reply = bot.get_response(message)
-            if reply.confidence == 0:
-                print("Chatbot: I don't understand")
-            else:
-                print('ChatBot:', reply)
+            print("i could not understand u ")                              #speak
+
+with sr.Microphone() as source:
+    audio_data = r.record(source, duration=4)
+    print("1")
+    text = r.recognize_google(audio_data)
+    print("Recognizing...")
+    print(text)
+    if text.lower() == start_statement:
+        print("Heyy friendd !!! whats up")                                  #speak
+        audio_rec()
+    else :
+        print("Could not recognize you ")
