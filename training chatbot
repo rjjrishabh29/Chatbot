@@ -1,0 +1,32 @@
+
+from chatterbot import ChatBot
+
+import yaml
+from chatterbot.trainers import ChatterBotCorpusTrainer
+import yaml
+dataset = yaml.load('datasets_110245_263384_ai')
+
+bot = ChatBot(
+    "Chat Bot",
+    storage_adapter="chatterbot.storage.SQLStorageAdapter",
+    database="botData.sqlite3")
+
+trainer = ChatterBotCorpusTrainer(bot)
+
+trainer.train(dataset)
+
+
+
+while True:
+
+        message = input('You:')
+
+        if message.strip() == 'Bye':
+            print('ChatBwhat ot: Bye')
+            break
+        else:
+            reply = bot.get_response(message)
+            if reply.confidence == 0:
+                print("Chatbot: I don't understand")
+            else:
+                print('ChatBot:', reply)
