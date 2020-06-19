@@ -13,7 +13,7 @@ l=[]
 
 for i in  os.listdir('dataset'):
      l.append(yaml.load("dataset//" + i))
-     print("dataset//" + i)
+
 
 def speak(audioString):
     print(audioString)
