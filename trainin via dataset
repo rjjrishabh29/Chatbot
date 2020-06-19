@@ -1,0 +1,51 @@
+from chatterbot import ChatBot
+import os
+import yaml
+from chatterbot.trainers import ChatterBotCorpusTrainer
+import yaml
+from playsound import playsound
+from gtts import gTTS
+
+
+
+#dataset for training
+l=[]
+
+for i in  os.listdir('dataset'):
+     l.append(yaml.load("dataset//" + i))
+     print("dataset//" + i)
+
+def speak(audioString):
+    print(audioString)
+    tts = gTTS(text=audioString, lang='en')
+    tts.save("audio.mp3")
+    playsound("audio.mp3")
+
+bot = ChatBot(
+    "Chat Bot",
+    storage_adapter="chatterbot.storage.SQLStorageAdapter",
+    database="botData.sqlite3")
+
+trainer = ChatterBotCorpusTrainer(bot)
+
+#training the chatbot
+for i in l:
+    try:
+        trainer.train(i)
+    except:
+        print("error in file" + i)
+
+
+while True:
+
+        message = input('You:')
+
+        if message.strip() == 'Bye':
+            print('ChatBwhat ot: Bye')
+            break
+        else:
+            reply = bot.get_response(message)
+            if reply.confidence == 0:
+                print("Chatbot: I don't understand")
+            else:
+                print('ChatBot:', reply)
