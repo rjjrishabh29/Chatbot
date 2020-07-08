@@ -22,7 +22,7 @@ def sending_mail(text):
     mail.login('******@gmail.com', '**********')
 
     # send message
-    mail.sendmail('rjrishabh29@gmail.com', 'rjjrishabh29@gmail.com', content)
+    mail.sendmail('from@gmail.com', 'to@gmail.com', content)
 
     # end mail connection
     mail.close()
